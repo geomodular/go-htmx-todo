@@ -1,0 +1,40 @@
+<!-- Home Page -->
+{{define "title"}}Welcome Home{{end}}
+<!---->
+{{define "body"}}
+<main class="w3-display-container w3-grey" style="height: 100vh">
+  <div
+    class="w3-display-middle w3-card-4 w3-mobile"
+    style="width: 40rem"
+  >
+    <div class="w3-white w3-container">
+      <form
+        hx-post="/tasks"
+        hx-target="#task-list"
+        hx-swap="outerHTML"
+        class="w3-container w3-section"
+      >
+        <h2>My ToDo using HTMX</h2>
+        <input
+          id="task-add-input"
+          name="note"
+          type="text"
+          class="w3-input w3-border"
+        >
+      </form>
+      {{template "tasks" .Tasks}}
+      <div
+        class="w3-margin"
+        style="display: flex; justify-content: center"
+      >
+        <a href="#" class="w3-button">&laquo;</a>
+        {{range .Pages}}
+        <a href="#" class="w3-button {{if .Active}}w3-light-blue{{end}}"
+        >{{.Number}}</a>
+        {{end}}
+        <a href="#" class="w3-button">&raquo;</a>
+      </div>
+    </div>
+  </div>
+</main>
+{{end}}

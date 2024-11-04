@@ -1,0 +1,36 @@
+<!-- Tasks -->
+{{define "tasks"}}
+<ul id="task-list" class="w3-ul w3-margin-bottom">
+  {{range .}} {{template "task" .}} {{end}}
+</ul>
+{{end}}
+<!---->
+{{define "task"}}
+<li
+  id="task-{{.ID}}"
+  class="smooth w3-padding-large w3-display-container {{if .Done}}w3-light-blue{{end}}"
+>
+  <input
+    hx-post="/tasks/{{.ID}}"
+    hx-target="#task-{{.ID}}"
+    hx-swap="outerHTML"
+    class="w3-check"
+    type="checkbox"
+    {{if
+    .Done}}
+    checked="checked"
+    hx-vals='{"action": "uncheck"}'
+    {{else}}
+    hx-vals='{"action": "check"}'
+    {{end}}
+  >
+  <label style="padding-left: 1rem; {{if .Done}}text-decoration: line-through{{end}}">{{.Note}}</label>
+  <span
+    hx-delete="/tasks/{{.ID}}"
+    hx-target="#task-list"
+    hx-swap="outerHTML"
+    class="w3-button w3-display-right"
+    style="background-color: transparent;"
+  >&times;</span>
+</li>
+{{end}}
