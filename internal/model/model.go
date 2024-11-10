@@ -2,6 +2,7 @@ package model
 
 type Model interface {
 	List(offset int, size int, reverse bool) []Task
+	// ListReverse?
 	Get(id int) (Task, bool)
 	Add(note string)
 	Remove(id int)

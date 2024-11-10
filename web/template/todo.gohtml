@@ -1,0 +1,82 @@
+<!-- ToDo -->
+
+{{define "todo"}}
+<div id="todo">
+  <form
+    hx-post="/tasks"
+    hx-target="closest div"
+    class="w3-container w3-section"
+  >
+    <input
+      name="note"
+      type="text"
+      class="w3-input w3-border"
+    >
+  </form>
+  <ul class="w3-ul w3-margin-bottom">
+    {{range .Tasks}} {{template "task" .}} {{end}}
+  </ul>
+
+  {{template "pagination" .Pages}}
+</div>
+{{end}}
+
+<!---->
+
+{{define "task"}}
+<li
+  id="task-{{.Task.ID}}"
+  class="smooth w3-padding-large {{if .Task.Done}}w3-light-blue{{end}}"
+  style="display: flex; justify-content: space-between; align-items: center"
+  hx-vals='{"offset": {{.Page.Offset}}, "size": {{.Page.Size}}}'
+>
+  <input
+    hx-post="/tasks/{{.Task.ID}}"
+    hx-target="#task-{{.Task.ID}}"
+    hx-swap="outerHTML"
+    class="w3-check"
+    style="align-self: flex-start"
+    type="checkbox"
+    name="checkbox"
+    {{if .Task.Done}}
+    checked="checked"
+    {{end}}
+  >
+  <label style="flex: 1; padding-left: 1rem; {{if .Task.Done}}text-decoration: line-through{{end}}">{{.Task.Note}}</label>
+  <div
+    hx-delete="/tasks/{{.Task.ID}}"
+    hx-target="#todo"
+    hx-swap="outerHTML"
+    class="w3-button"
+    style="background-color: transparent;"
+  >&times;</div>
+</li>
+{{end}}
+
+<!---->
+
+{{define "pagination"}}
+<div
+  class="w3-margin"
+  style="display: flex; justify-content: center"
+  hx-push-url="true"
+  hx-select="#todo"
+  hx-target="#todo"
+>
+  {{range .}}
+  <a
+    hx-get="/"
+    hx-vals='{"offset": {{.Offset}}, "size": {{.Size}}}'
+    class="w3-button {{if .Active}}w3-light-blue{{end}}"
+  >
+    {{if (eq .ItemType 0)}}
+    {{.Number}}
+    {{else if (eq .ItemType 1)}}
+    &laquo;
+    {{else}}
+    &raquo;
+    {{end}}
+  </a>
+  {{end}}
+</div>
+{{end}}
