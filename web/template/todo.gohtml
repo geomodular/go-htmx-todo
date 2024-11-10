@@ -46,9 +46,10 @@
   <div
     hx-delete="/tasks/{{.Task.ID}}"
     hx-target="#todo"
-    hx-swap="outerHTML"
+    hx-swap="outerHTML swap:0.3s"
     class="w3-button"
     style="background-color: transparent;"
+    _="on htmx:beforeRequest toggle .deleting on #task-{{.Task.ID}}"
   >&times;</div>
 </li>
 {{end}}
